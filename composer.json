@@ -1,0 +1,19 @@
+{
+    "name": "dev/gerador-certificado",
+    "autoload": {
+        "psr-4": {
+            "Src\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Tarcizio Walter",
+            "email": "tarciziowalter@outlook.com"
+        }
+    ],
+    "require": {
+        "dompdf/dompdf": "^2.0",
+        "phpmailer/phpmailer": "^6.9",
+        "setasign/fpdf": "^1.8"
+    }
+}
