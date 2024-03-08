@@ -77,7 +77,7 @@ function enviarEmail($evento, $destinatario, $anexoPath)
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port       = 465;
 
-        $mail->setFrom('webmaster@adsaofrancisco.com.br', 'AD São Francisco do Sul');
+        $mail->setFrom('', '');
         $mail->addAddress($destinatario["email"]);
 
         $mail->isHTML(true);
