@@ -70,10 +70,10 @@ function enviarEmail($evento, $destinatario, $anexoPath)
     try {
         $mail->CharSet    = 'UTF-8';
         $mail->isSMTP();        
-        $mail->Host       = 'mail.adsaofrancisco.com.br';
+        $mail->Host       = '';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'webmaster@adsaofrancisco.com.br';
-        $mail->Password   = 'SFT^x5*HSJ?i';
+        $mail->Username   = '';
+        $mail->Password   = '';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port       = 465;
 
