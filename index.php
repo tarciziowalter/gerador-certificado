@@ -7,54 +7,46 @@ use PHPMailer\PHPMailer\Exception;
 
 require_once "vendor/autoload.php";
     
-if(isset($_GET['senha']) && $_GET['senha'] == "47984224363"){
-
-    $database = new Database();
-    $inscricoes = $database->getInscricoesByEventoId(2, 5);
+$database = new Database();
+$inscricoes = $database->getInscricoesByEventoId(2, 5);
     
-    $evento = $database->getByEventoId(2);
+$evento = $database->getByEventoId(2);
     
-    foreach($inscricoes as $inscricao){
+foreach($inscricoes as $inscricao){
         
-        $pdf = new FPDF();
-        $pdf->AddPage('L');
-        $pdf->Image('assets/img/certificate.png', 0, 0, 297, 210);
-        $pdf->SetFont('Arial', 'B', 28); 
+    $pdf = new FPDF();
+    $pdf->AddPage('L');
+    $pdf->Image('assets/img/certificate.png', 0, 0, 297, 210);
+    $pdf->SetFont('Arial', 'B', 28); 
         
-        $width = $pdf->GetStringWidth(trim($inscricao["nome"]));
+    $width = $pdf->GetStringWidth(trim($inscricao["nome"]));
         
-        $pdf->SetX(297 - $width);
+    $pdf->SetX(297 - $width);
 
-        $posicaoX = (297 - $width) / 2;
+    $posicaoX = (297 - $width) / 2;
 
-        $pdf->SetXY($posicaoX, 86);
-        $pdf->SetTextColor(0,0,0);
+    $pdf->SetXY($posicaoX, 86);
+    $pdf->SetTextColor(0,0,0);
         
-        $pdf->Cell($width, 10, iconv('UTF-8', 'windows-1252', valida_nome(trim($inscricao["nome"]))), 0, 1, 'C');
+    $pdf->Cell($width, 10, iconv('UTF-8', 'windows-1252', valida_nome(trim($inscricao["nome"]))), 0, 1, 'C');
         
-        // Gerar certificado para cada inscrição
-        $pdfPath = 'uploads/' . $inscricao['id'] . '_certificado.pdf';
-        $pdf->Output('F', $pdfPath);
+    // Gerar certificado para cada inscrição
+    $pdfPath = 'uploads/' . $inscricao['id'] . '_certificado.pdf';
+    $pdf->Output('F', $pdfPath);
      
-        // Enviar e-mail com certificado anexado
-        enviarEmail($evento, $inscricao, $pdfPath);
+   // Enviar e-mail com certificado anexado
+   enviarEmail($evento, $inscricao, $pdfPath);
     
-        // Marcar certificado como emitido
-        $database->emitirCertificado($inscricao["id"], 1);
+   // Marcar certificado como emitido
+   $database->emitirCertificado($inscricao["id"], 1);
     
-    }
+}
     
-    if(count($inscricoes) > 0){
-        echo json_encode(["msg" => "Certificados enviados com sucesso"]);
-        die;
-    }else{
-        echo json_encode(["msg" => "Nenhum certificado para emitir"]);
-        die;
-    }
-    
-
+if(count($inscricoes) > 0){
+    echo json_encode(["msg" => "Certificados enviados com sucesso"]);
+    die;
 }else{
-    echo json_encode(["msg" => "Acesso Inválido"]);
+    echo json_encode(["msg" => "Nenhum certificado para emitir"]);
     die;
 }
 
@@ -85,7 +77,7 @@ function enviarEmail($evento, $destinatario, $anexoPath)
         $mail->Body = "
         <p>Olá {$destinatario['nome']},</p>
         <p>Agradecemos por sua participação no {$evento['titulo']}. Anexamos o seu certificado de participação.</p>
-        <p>Atenciosamente,<br>Ministério de Louvor - AD São Francisco do Sul</p>
+        <p>Atenciosamente</p>
     ";
 
         // Anexar o certificado ao e-mail
